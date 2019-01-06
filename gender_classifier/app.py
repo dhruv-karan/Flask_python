@@ -1,14 +1,41 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+from wtforms import Form, TextAreaField, validators
+
 import pickle
+import os
+import sqlite3 
 import numpy as np
 
 app = Flask(__name__)
-
+cur_dir = os.path.dirname(__file__)
 model = pickle.load(open("model.pkl","rb"))
-arr = np.array([[5,69]])
+clf = pickle.load(open(os.path.join(cur_dir,'model.pkl'),'rb'))
+
+db = os.path.join(cur_dir,'reviews.sqlite')
+
+
+def classifier(document):
+    label = {0:'female',1:'male'}
+    X = np.array((document))
+    y = clf.predict(X)[0]
+    if y <0.5:
+        y ==0
+    else:
+        y ==1
+    return label[y]
+def train(document,y):
+    X = np.array([[document]])
+    clf.partial_fit(X,y[y])
+
+
+
+
+
+
 @app.route('/')
 def index():
     return render_template('home.html')
+
 
 @app.route('/predict')
 def predict():
