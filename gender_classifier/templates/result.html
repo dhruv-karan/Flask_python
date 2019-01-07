@@ -1,5 +1,29 @@
 {% extends 'layout.html' %}
 
 {% block body %}
- <p>result</p>
+<h2>Gender classifier</h2>
+
+<div> <span>height: {{height}}</span> <span>weight:{{weight}}</span> </div>
+
+<h3> prection:</h3>
+<div> {{prection}} </div>
+
+<div id="button"  >
+<form>
+        <input type=submit value='Correct' name='feedback_button'>
+        <input type=submit value='Incorrect' name='feedback_button'>
+        <input type=hidden value='{{ prediction }}' name='prediction'>    
+        <input type=hidden value='{{ height }}' name='height'> 
+        <input type=hidden value='{{ weight }}' name='weight'>  
+
+</form>
+</div>
+<div  id="button" >
+    <form action="/">
+    <input type="submit" value="Submit another review" >
+    </form>
+</div>
+
 {% endblock %}
+
+<!-- <input type=submit value='Submit review' name='submit_btn'> -->

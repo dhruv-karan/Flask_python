@@ -3,7 +3,7 @@
 {% block body %}
 <h1>Predict</h1>
 {% from "_formhelper.html" import render_field %}
-<form method="POST",action=''>
+<form method="POST" action="/result">
     <div>
         {{render_field(form.height)}}
     </div>
@@ -11,7 +11,7 @@
         {{render_field(form.weight)}}
     </div>
     <p>
-        <input type='submit',value='submit' >
+        <input type=submit ,value='submit review' name="submit_btn" >
     </p>
 
 </form>

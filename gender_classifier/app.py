@@ -13,11 +13,10 @@ clf = pickle.load(open(os.path.join(cur_dir,'model.pkl'),'rb'))
 
 db = os.path.join(cur_dir,'reviews.sqlite')
 
-
 def classifier(height,weight):
     label = {0:'female',1:'male'}
-    X = np.array((height,weight))
-    y = clf.predict(X)[0]
+    X = np.array([[np.float64(height),np.float64(weight)]])
+    y = clf.predict(X)
     if y < 0.5:
         y == 0
     else:
@@ -39,8 +38,8 @@ def sqlite_entry(path,height,weight,y):
 
 #================================== routing or can be seen logic
 class Dataform(Form):
-    height = IntegerField('height', [validators.length(max=3, min=2)] )
-    weight =  IntegerField('weight', [validators.length(max=3, min=2)] )
+    height = IntegerField('height', [validators.NumberRange(min=10, max=200)] )
+    weight =  IntegerField('weight', [validators.NumberRange(min=10, max=300)] )
     
 
 @app.route('/')
@@ -49,14 +48,17 @@ def index():
     return render_template('prediction_form.html', form=form)
 
 
-@app.route('/predict',methods=['POST'])
+@app.route('/result',methods=['POST'])
 def result():
     form  = Dataform(request.form)
     if request.method == 'POST' and form.validate():
         height = request.form['height']
         weight = request.form['weight']
         y = classifier(height,weight)
-        return render_template('prediction_form.html', height = height, weight=weight,prediction=y)
+        return render_template('result.html',
+        height=height,weight = weight,prediction=y)
+    else:
+        return render_template('prediction_form.html', form = form)
   
 @app.route('/thanks',methods=['POST'])
 def feedback():
