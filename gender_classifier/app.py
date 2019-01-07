@@ -25,16 +25,22 @@ def classifier(document):
     return label[y]
 def train(document,y):
     X = np.array([[document]])
-    clf.partial_fit(X,y[y])
+    clf.partial_fit(X,y)
+
+def sqlite_entry(path,document,y):
+    conn = sqlite3.connect(path)
+    c = conn.cursor()
+    c.execute("INSERT INTO review_db (review,sentiment,date)"\
+    "VALUES(?,?,DATETIME('now'))",(document,y))
+    conn.commit()
+    conn.close()
 
 
-
-
-
-
+#================================== routing or can be seen logic 
 @app.route('/')
 def index():
     return render_template('home.html')
+    
 
 
 @app.route('/predict')
