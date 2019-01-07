@@ -40,13 +40,13 @@ def sqlite_entry(path,height,weight,y):
 #================================== routing or can be seen logic
 class Dataform(Form):
     height = IntegerField('height', [validators.length(max=3, min=2)] )
-    weight =  IntegerField('height', [validators.length(max=3, min=2)] )
+    weight =  IntegerField('weight', [validators.length(max=3, min=2)] )
     
 
 @app.route('/')
 def index():
     form = Dataform(request.form)
-    return render_template('home.html', form=form)
+    return render_template('prediction_form.html', form=form)
 
 
 @app.route('/predict',methods=['POST'])
@@ -56,7 +56,7 @@ def result():
         height = request.form['height']
         weight = request.form['weight']
         y = classifier(height,weight)
-        return render_template('predict.html', height = height, weight=weight,prediction=y)
+        return render_template('prediction_form.html', height = height, weight=weight,prediction=y)
   
 @app.route('/thanks',methods=['POST'])
 def feedback():
@@ -71,6 +71,7 @@ def feedback():
     train(height,weight,y)
     sqlite_entry(db,height,weight,y)
     return render_template('thanks.html')
+
 
 
 if __name__ == "__main__":
