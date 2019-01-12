@@ -2,7 +2,7 @@ import pandas as pd
 import os
 import numpy as np
 import re
-import pickle 
+import pickle
 import nltk
 from nltk.corpus import stopwords
 
@@ -47,8 +47,9 @@ for i in range(len(data_x)):
     review = re.sub(r'\s+', ' ', review)
     corpus.append(review)
 
-from sklearn.feature_extraction.text import CountVectorizer
-vectorizer = CountVectorizer(max_features = 2000, min_df = 3, max_df = 0.6, stop_words = stopwords.words('english'))
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+vectorizer = TfidfVectorizer(max_features = 2000, min_df = 3, max_df = 0.6, stop_words = stopwords.words('english'))
 X = vectorizer.fit_transform(corpus).toarray()
 
 
@@ -56,16 +57,20 @@ X = vectorizer.fit_transform(corpus).toarray()
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, data_y, test_size = 0.20, random_state = 0)
 
+# Training the classifier
+from sklearn.linear_model import LogisticRegression
+classifier = LogisticRegression()
+classifier.fit(X_train,y_train)
 
 
+# Testing model performance
+pred = classifier.predict(X_test)
 
+#accuracy
+classifier.score(X_test,y_test)
 
-
-
-
-
-
-
+#pickling model
+pickle.dump(classifier, open("model.pkl","wb"))
 
 
 
