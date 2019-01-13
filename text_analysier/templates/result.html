@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<h2>review classifier</h2>
+
+<div> <span>review:{{review}}</span> </div>
+
+<h3> prediction:</h3>
+<div> {{prediction}} </div>
+
+<div>
+<form>
+        <input type=submit value='Correct' name='feedback_button'>
+        <input type=submit value='Incorrect' name='feedback_button'>
+        <input type=hidden value='{{ prediction }}' name='prediction'>    
+        <input type="hidden" value="{{review}}",name='review' > 
+
+</form>
+</div>
+<div>
+    <form action="/">
+    <input type="submit" value="Submit another review" >
+    </form>
+</div>
+
+{% endblock %}
+
+<!-- <input type=submit value='Submit review' name='submit_btn'> -->
