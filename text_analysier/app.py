@@ -47,6 +47,10 @@ def classifier (review):
     y = model.predict(X)
     return label[y[0]]
 
+def train(review,y):
+    X = toArray([review])
+    model.partial_fit(X,[y])
+
 def sqlite_entry(path,review,y):
     conn = sqlite3.connect(path)
     c = conn.cursor()
@@ -76,18 +80,19 @@ def result():
     else:
         return render_template('prediction_form.html', form = form)
 
-# @app.route('./thanks',methods=['POST'])
-# def feedback():
-#     feedback = request.form('feedback_button')
-#     review = request.form['review']
-#     prediction = request.form['prediction']
-#     inv_label = {'negative':0,'positive':1}
-#     y = inv_label[prediction]
-#     if feedback == 'Incorrect':
-#         y = int(not(y))
-#     # train(review,y)
-#     sqlite_entry(db,review,y)
-#     return render_template('thanks.html')
+
+@app.route('/thanks',methods=['POST'])
+def feedback():
+    feedback = request.form('feedback_button')
+    review = request.form['review']
+    prediction = request.form['prediction']
+    inv_label = {'negative':0,'positive':1}
+    y = inv_label[prediction]
+    if feedback == 'Incorrect':
+        return render_template('thanks.html')
+    train(review,y)
+    sqlite_entry(db,review,y)
+    return render_template('thanks.html')
 
 
 
