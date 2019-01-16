@@ -30,13 +30,25 @@ def clean(review):
 
 def toArray(review):
     corpus = [review]
-    # vectorizer = TfidfVectorizer(stop_words = stopwords.words('english'))
     vectorizer = TfidfVectorizer()
     review  = vectorizer.fit_transform(corpus).toarray()
-    # review = np.reshape(review,(1,2000))
-    # review = np.array[[vectorizer]]
-    return review
+    arr = np.zeros((1,2000))
+    for i in range(len(arr)):
+        if i <= len(review):
+            arr[0][i] = review[0][i]
+  
+    return arr
 
+lpg = toArray("my name name us dhruv karan yadav")
+lpg[0][0]
+print(lpg)
+lpg.shape
+abc = np.zeros((100)).T
+abc[1] = 2
+print(abc.shape)
+print(lpg.reshape(1,600))
+
+abc  + lpg 
 def classifier(review):
     label = {0:"negative",1:"positive"}
     #review = clean(review)
