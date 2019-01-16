@@ -32,29 +32,20 @@ def toArray(review):
     corpus = [review]
     vectorizer = TfidfVectorizer()
     review  = vectorizer.fit_transform(corpus).toarray()
+    print(review)
+    print(len(review[0]))
     arr = np.zeros((1,2000))
-    for i in range(len(arr)):
-        if i <= len(review):
-            arr[0][i] = review[0][i]
-  
+    for i in range(len(review[0])):
+        arr[0][i] = review[0][i]
     return arr
 
-lpg = toArray("my name name us dhruv karan yadav")
-lpg[0][0]
-print(lpg)
-lpg.shape
-abc = np.zeros((100)).T
-abc[1] = 2
-print(abc.shape)
-print(lpg.reshape(1,600))
 
-abc  + lpg 
-def classifier(review):
+def classifier (review):
     label = {0:"negative",1:"positive"}
     #review = clean(review)
     X = toArray(review)
-    y = clf.predict(X)
-    return label[y]
+    y = model.predict(X)
+    return label[y[0]]
 
 def sqlite_entry(path,review,y):
     conn = sqlite3.connect(path)
