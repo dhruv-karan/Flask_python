@@ -16,12 +16,13 @@ db = os.path.join(cur_dir,'reviews.sqlite')
 def classifier(height,weight):
     label = {0:'female',1:'male'}
     X = np.array([[np.float64(height),np.float64(weight)]])
-    y = clf.predict(X)
-    if y < 0.5:
-        y == 0
+    y = model.predict(X)
+    proba = y[0][0] * 100
+    if y>0.5:
+        y=1 
     else:
-        y == 1
-    return label[y]
+        y=0
+    return label[y], proba
 
 def train(height,weight,y):
     X = np.array([[height,weight]])
@@ -54,11 +55,12 @@ def result():
     if request.method == 'POST' and form.validate():
         height = request.form['height']
         weight = request.form['weight']
-        y = classifier(height,weight)
-        return render_template('result.html',
-        height=height,weight = weight,prediction=y)
+        y,proba = classifier(height,weight)
+
+        return render_template('result.html', height=height,weight = weight,prediction=y, probability= proba)
+
     else:
-        return render_template('prediction_form.html', form = form)
+        return render_template('prediction_form.html', form = form) 
   
 @app.route('/thanks',methods=['POST'])
 def feedback():
