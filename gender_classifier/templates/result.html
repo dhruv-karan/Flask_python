@@ -5,14 +5,15 @@
 
 <div> <span>height: {{height}}</span> <span>weight:{{weight}}</span> </div>
 
-<h3> prediction:</h3>
-<div> {{prediction}} </div>
+<span> <h3> prediction:</h3> <div> {{prediction}} </div>  </span> 
+<span>probality : {{probability}}</span>
 
 <div id="button">
 <form>
-        <input type=submit value='Correct' name='feedback_button'>
-        <input type=submit value='Incorrect' name='feedback_button'>
-        <input type=hidden value='{{ prediction }}' name='prediction'>    
+        <!-- <input type=submit value='Correct' name='feedback_button'>
+        <input type=submit value='Incorrect' name='feedback_button'> -->
+        <input type=hidden value='{{ prediction }}' name='prediction'> 
+         <!-- <input type=hidden value='{{probability}}' name="probability"> -->
         <input type=hidden value='{{ height }}' name='height'> 
         <input type=hidden value='{{ weight }}' name='weight'>  
 
